@@ -21,7 +21,7 @@ public class WeatherObservation {
     @Column(name="wmo_code")
     private String wmoCode;
 
-    @Column(name="airTemperature")
+    @Column(name="air_temperature")
     private BigDecimal airTemperature;
 
     @Column(name="wind_speed")
