@@ -2,6 +2,7 @@ package ee.fujitsu.delivery_fee.entity;
 
 import jakarta.persistence.*;
 
+
 import java.time.Instant;
 
 @Entity

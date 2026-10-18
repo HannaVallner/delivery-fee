@@ -23,7 +23,7 @@ public class RegionalBaseFee {
     @Column(name="vehicle_type", nullable=false)
     private String vehicleType;
 
-    // Monetary values should be bigdecimals for accuracy,
+    // Monetary values in  bigdecimals for accuracy,
     // up to 10 numerical values in a fee, up to 2 decimal points
     @Column(name="base_fee", nullable = false, precision = 10, scale = 2)
     private BigDecimal baseFee;
