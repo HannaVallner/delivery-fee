@@ -1,6 +1,7 @@
 package ee.fujitsu.delivery_fee.service;
 
 import ee.fujitsu.delivery_fee.entity.WeatherObservation;
+import ee.fujitsu.delivery_fee.repository.WeatherObservationRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -22,11 +23,13 @@ import java.util.Set;
 public class WeatherImportService {
 
     private static final String WEATHER_URL = "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
-
     private final RestClient restClient;
+    private final WeatherObservationRepository weatherObservationRepository;
 
-    public WeatherImportService() {
+    public WeatherImportService(WeatherObservationRepository weatherObservationRepository) {
         this.restClient = RestClient.create();
+        this.weatherObservationRepository = weatherObservationRepository;
+
     }
 
     private String downloadWeatherXml() {
@@ -100,21 +103,7 @@ public class WeatherImportService {
                 observation.setWindSpeed(windSpeed);
                 observation.setWeatherPhenomenon(phenomenon);
 
-                System.out.println("Created observation for: "
-                        + observation.getStationName());
-                System.out.println("ID: "
-                        + observation.getId());
-                System.out.println("WMO code: "
-                        + observation.getWmoCode());
-                System.out.println("Temperature: "
-                        + observation.getAirTemperature());
-                System.out.println("Wind speed: "
-                        + observation.getWindSpeed());
-                System.out.println("Weather phenomenon: "
-                        + observation.getWeatherPhenomenon());
-                System.out.println("Observed at: "
-                        + observation.getObservedAt());
-                System.out.println("--------------------");
+                weatherObservationRepository.save(observation);
             }
         }
 
