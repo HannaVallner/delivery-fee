@@ -21,8 +21,9 @@ public class WeatherFeeRule {
     @Column(name="rule_type", nullable = false)
     private WeatherRuleType ruleType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="weather_condition", nullable = false)
-    private String weatherCondition;
+    private WeatherCondition weatherCondition;
 
     // Minimum value for a given weather condition to result in a given fee
     @Column(name="min_value")
@@ -54,7 +55,7 @@ public class WeatherFeeRule {
         return ruleType;
     }
 
-    public String getWeatherCondition() {
+    public WeatherCondition getWeatherCondition() {
         return weatherCondition;
     }
 
@@ -80,7 +81,7 @@ public class WeatherFeeRule {
         this.ruleType = ruleType;
     }
 
-    public void setWeatherCondition(String weatherCondition) {
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
         this.weatherCondition = weatherCondition;
     }
 
