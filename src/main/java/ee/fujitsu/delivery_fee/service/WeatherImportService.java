@@ -35,11 +35,11 @@ public class WeatherImportService {
     }
 
     public String getTagValue(Element station, String tagName) {
-        String value = station.getElementsByTagName(tagName)
-                .item(0)
-                .getTextContent()
-                .trim();
-
+        Node node = station.getElementsByTagName(tagName).item(0);
+        if (node == null) {
+            return null;
+        }
+        String value = node.getTextContent().trim();
         return value.isEmpty() ? null : value;
     }
 
@@ -54,8 +54,13 @@ public class WeatherImportService {
 
         //time at the root of the document
         Element root = document.getDocumentElement();
-        long timestamp = Long.parseLong(root.getAttribute("timestamp"));
-        Instant observedAt = Instant.ofEpochSecond(timestamp);
+        String timestamp = root.getAttribute("timestamp");
+        if (timestamp.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Weather XML is missing the observations' timestamp"
+            );
+        }
+        Instant observedAt = Instant.ofEpochSecond(Long.parseLong(timestamp));
 
         //stations from tag name
         NodeList stations = document.getElementsByTagName("station");
@@ -68,9 +73,9 @@ public class WeatherImportService {
         for (int i = 0; i < stations.getLength(); i++) {
             Element station = (Element) stations.item(i);
 
-            String name = station.getElementsByTagName("name")
-                    .item(0).getTextContent().trim();
+            String name = getTagValue(station, "name");
 
+            // Skip unneeded stations, including stations without a name
             if (requiredStations.contains(name)) {
                 String wmoCode = getTagValue(station, "wmocode");
                 String temperature = getTagValue(station, "airtemperature");

@@ -2,7 +2,6 @@ package ee.fujitsu.delivery_fee.entity;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -22,10 +21,10 @@ public class WeatherObservation {
     private String wmoCode;
 
     @Column(name="air_temperature")
-    private BigDecimal airTemperature;
+    private Double airTemperature;
 
     @Column(name="wind_speed")
-    private BigDecimal windSpeed;
+    private Double windSpeed;
 
     @Column(name="weather_phenomenon")
     private String weatherPhenomenon;
