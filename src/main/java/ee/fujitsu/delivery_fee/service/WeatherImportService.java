@@ -5,6 +5,7 @@ import ee.fujitsu.delivery_fee.repository.WeatherObservationRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -109,5 +110,10 @@ public class WeatherImportService {
 
     }
 
+    @Scheduled(cron = "0 15 * * * *")
+    public void scheduledWeatherImport() throws Exception {
+        findRequiredStations();
+        System.out.println("Scheduled weather import started");
+    }
 
 }
