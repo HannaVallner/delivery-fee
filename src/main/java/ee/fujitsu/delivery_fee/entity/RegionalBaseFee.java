@@ -20,8 +20,9 @@ public class RegionalBaseFee {
     @Column(name="city", nullable=false)
     private String city;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="vehicle_type", nullable=false)
-    private String vehicleType;
+    private VehicleType vehicleType;
 
     // Monetary values in  bigdecimals for accuracy,
     // up to 10 numerical values in a fee, up to 2 decimal points
@@ -37,7 +38,7 @@ public class RegionalBaseFee {
         this.city = city;
     }
 
-    public void setVehicleType(String vehicleType) {
+    public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
     }
 
@@ -54,7 +55,7 @@ public class RegionalBaseFee {
         return city;
     }
 
-    public String getVehicleType() {
+    public VehicleType getVehicleType() {
         return vehicleType;
     }
 

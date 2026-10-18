@@ -12,12 +12,14 @@ public class WeatherFeeRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="vehicle_type", nullable = false)
-    private String vehicleType;
+    private VehicleType vehicleType;
 
     // Defines whether a rule forbids delivery or adds surcharge
+    @Enumerated(EnumType.STRING)
     @Column(name="rule_type", nullable = false)
-    private String ruleType;
+    private WeatherRuleType ruleType;
 
     @Column(name="weather_condition", nullable = false)
     private String weatherCondition;
@@ -41,11 +43,11 @@ public class WeatherFeeRule {
         return id;
     }
 
-    public String getVehicleType() {
+    public VehicleType getVehicleType() {
         return vehicleType;
     }
 
-    public String getRuleType() {
+    public WeatherRuleType getRuleType() {
         return ruleType;
     }
 
@@ -67,11 +69,11 @@ public class WeatherFeeRule {
 
     // Setters for all fields aside from id, as it is generated as needs automatically
 
-    public void setVehicleType(String vehicleType) {
+    public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
     }
 
-    public void setRuleType(String ruleType) {
+    public void setRuleType(WeatherRuleType ruleType) {
         this.ruleType = ruleType;
     }
 
