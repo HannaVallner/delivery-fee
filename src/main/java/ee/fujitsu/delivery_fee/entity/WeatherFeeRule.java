@@ -38,6 +38,9 @@ public class WeatherFeeRule {
     @Column(name="additional_fee", precision = 10, scale = 2)
     private BigDecimal additionalFee;
 
+    public WeatherFeeRule() {
+
+    }
     // Getters for all fields
     public Long getId() {
         return id;
