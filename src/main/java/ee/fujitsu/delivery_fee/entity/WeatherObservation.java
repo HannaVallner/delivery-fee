@@ -7,6 +7,7 @@ import java.time.Instant;
 @Entity
 @Table(name="weather_observations")
 public class WeatherObservation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

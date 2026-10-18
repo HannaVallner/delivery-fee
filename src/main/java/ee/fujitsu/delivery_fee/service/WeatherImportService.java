@@ -1,5 +1,7 @@
 package ee.fujitsu.delivery_fee.service;
 
+import ee.fujitsu.delivery_fee.entity.WeatherObservation;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -43,6 +45,14 @@ public class WeatherImportService {
         return value.isEmpty() ? null : value;
     }
 
+    public Double getDoubleValue(Element station, String tagName) {
+        String tagValue = getTagValue(station, tagName);
+        if (tagValue == null) {
+            return null;
+        }
+        return Double.parseDouble(tagValue);
+    }
+
     public void findRequiredStations() throws Exception {
         String xml = downloadWeatherXml();
 
@@ -78,16 +88,32 @@ public class WeatherImportService {
             // Skip unneeded stations, including stations without a name
             if (requiredStations.contains(name)) {
                 String wmoCode = getTagValue(station, "wmocode");
-                String temperature = getTagValue(station, "airtemperature");
-                String windSpeed = getTagValue(station, "windspeed");
+                Double temperature = getDoubleValue(station, "airtemperature");
+                Double windSpeed = getDoubleValue(station, "windspeed");
                 String phenomenon = getTagValue(station, "phenomenon");
 
-                System.out.println("Station: " + name);
-                System.out.println("WMO code: " + wmoCode);
-                System.out.println("Temperature: " + temperature);
-                System.out.println("Wind speed: " + windSpeed);
-                System.out.println("Phenomenon: " + phenomenon);
-                System.out.println("Observed at: " + observedAt);
+                WeatherObservation observation = new WeatherObservation();
+                observation.setObservedAt(observedAt);
+                observation.setStationName(name);
+                observation.setWmoCode(wmoCode);
+                observation.setAirTemperature(temperature);
+                observation.setWindSpeed(windSpeed);
+                observation.setWeatherPhenomenon(phenomenon);
+
+                System.out.println("Created observation for: "
+                        + observation.getStationName());
+                System.out.println("ID: "
+                        + observation.getId());
+                System.out.println("WMO code: "
+                        + observation.getWmoCode());
+                System.out.println("Temperature: "
+                        + observation.getAirTemperature());
+                System.out.println("Wind speed: "
+                        + observation.getWindSpeed());
+                System.out.println("Weather phenomenon: "
+                        + observation.getWeatherPhenomenon());
+                System.out.println("Observed at: "
+                        + observation.getObservedAt());
                 System.out.println("--------------------");
             }
         }
