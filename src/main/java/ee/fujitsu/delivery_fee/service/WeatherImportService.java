@@ -57,7 +57,7 @@ public class WeatherImportService {
         return Double.parseDouble(tagValue);
     }
 
-    public void findRequiredStations() throws Exception {
+    public void importRequiredStations() throws Exception {
         String xml = downloadWeatherXml();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -110,10 +110,9 @@ public class WeatherImportService {
 
     }
 
-    @Scheduled(cron = "0 15 * * * *")
+    @Scheduled(cron = "${weather.import.cron}")
     public void scheduledWeatherImport() throws Exception {
-        findRequiredStations();
-        System.out.println("Scheduled weather import started");
+        importRequiredStations();
     }
 
 }
