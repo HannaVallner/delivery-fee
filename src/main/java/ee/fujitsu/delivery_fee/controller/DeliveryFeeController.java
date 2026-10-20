@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @RestController
 public class DeliveryFeeController {
@@ -20,8 +21,9 @@ public class DeliveryFeeController {
     @GetMapping("/api/delivery-fee")
     public BigDecimal calculateDeliveryFee(
             @RequestParam String city,
-            @RequestParam VehicleType vehicleType) {
+            @RequestParam VehicleType vehicleType,
+            @RequestParam(required = false) Instant datetime) {
 
-        return deliveryFeeService.calculateDeliveryFee(city, vehicleType);
+        return deliveryFeeService.calculateDeliveryFee(city, vehicleType, datetime);
     }
 }

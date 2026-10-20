@@ -7,6 +7,7 @@ import ee.fujitsu.delivery_fee.repository.WeatherObservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -47,6 +48,23 @@ public class DeliveryFeeService {
 
         if (weatherObservation == null) {
             throw new IllegalArgumentException("No weather observation found for " + city);
+        }
+        return weatherObservation;
+    }
+
+    public WeatherObservation getWeatherObservation(String city, Instant requestedAt) {
+        String stationName = switch (city) {
+            case "Tallinn" -> "Tallinn-Harku";
+            case "Tartu" -> "Tartu-Tõravere";
+            case "Pärnu" -> "Pärnu";
+            default -> throw new IllegalArgumentException("Unsupported city: " + city);
+        };
+        WeatherObservation weatherObservation =
+                weatherObservationRepository.findFirstByStationNameAndObservedAtLessThanEqualOrderByObservedAtDesc(stationName, requestedAt);
+
+        if (weatherObservation == null) {
+            throw new IllegalArgumentException("No historical weathed data found for " + city
+                                                + " at or before " + requestedAt);
         }
         return weatherObservation;
     }
@@ -110,10 +128,21 @@ public class DeliveryFeeService {
         return weatherFee;
     }
 
-    public BigDecimal calculateDeliveryFee(String city, VehicleType vehicleType) {
+    public BigDecimal calculateDeliveryFee(String city, VehicleType vehicleType, Instant requestedAt) {
         BigDecimal baseFee = getBaseFee(city, vehicleType);
-        WeatherObservation weatherObservation = getLatestWeatherObservation(city);
+
+        WeatherObservation weatherObservation;
+
+        // Allow for missing datetime parameter
+        if (requestedAt == null) {
+            weatherObservation = getLatestWeatherObservation(city);
+        }
+        else {
+            weatherObservation = getWeatherObservation(city, requestedAt);
+        }
+
         BigDecimal weatherFee = calculateWeatherFee(weatherObservation, vehicleType);
+
         return baseFee.add(weatherFee);
     }
 
