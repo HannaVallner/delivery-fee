@@ -61,14 +61,18 @@ public class WeatherFeeRuleInitializer {
     private void addRule(WeatherFeeRuleRepository repository, VehicleType vehicleType,
                          WeatherRuleType ruleType, WeatherCondition weatherCondition,
                          Double minValue, Double maxValue, BigDecimal fee) {
-        WeatherFeeRule rule = new WeatherFeeRule();
-        rule.setVehicleType(vehicleType);
-        rule.setRuleType(ruleType);
-        rule.setWeatherCondition(weatherCondition);
-        rule.setMinValue(minValue);
-        rule.setMaxValue(maxValue);
-        rule.setAdditionalFee(fee);
+        if (!repository.existsByVehicleTypeAndRuleTypeAndWeatherConditionAndMinValueAndMaxValue(
+                vehicleType, ruleType, weatherCondition, minValue, maxValue)) {
 
-        repository.save(rule);
+            WeatherFeeRule rule = new WeatherFeeRule();
+            rule.setVehicleType(vehicleType);
+            rule.setRuleType(ruleType);
+            rule.setWeatherCondition(weatherCondition);
+            rule.setMinValue(minValue);
+            rule.setMaxValue(maxValue);
+            rule.setAdditionalFee(fee);
+
+            repository.save(rule);
+        }
     }
 }
