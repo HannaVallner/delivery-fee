@@ -110,5 +110,11 @@ public class DeliveryFeeService {
         return weatherFee;
     }
 
+    public BigDecimal calculateDeliveryFee(String city, VehicleType vehicleType) {
+        BigDecimal baseFee = getBaseFee(city, vehicleType);
+        WeatherObservation weatherObservation = getLatestWeatherObservation(city);
+        BigDecimal weatherFee = calculateWeatherFee(weatherObservation, vehicleType);
+        return baseFee.add(weatherFee);
+    }
 
 }
