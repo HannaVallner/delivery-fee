@@ -5,5 +5,7 @@ import ee.fujitsu.delivery_fee.entity.VehicleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegionalBaseFeeRepository extends JpaRepository<RegionalBaseFee, Long> {
+
     boolean existsByCityAndVehicleType(String city, VehicleType vehicleType);
+    RegionalBaseFee findByCityAndVehicleType(String city, VehicleType vehicleType);
 }
