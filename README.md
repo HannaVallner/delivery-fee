@@ -24,7 +24,7 @@ Run the application with:
 .\mvnw.cmd spring-boot:run
 ```
 
-The application runs on `http://localhost:8080`. The exact API endpoint URLs and their descriptions are listed in the next section.
+The application runs on `http://localhost:8080`. The exact API endpoint URLs and their descriptions are listed in a later section.
 
 Upon startup, the application initializes any missing default regional base fees and weather rules.
 
