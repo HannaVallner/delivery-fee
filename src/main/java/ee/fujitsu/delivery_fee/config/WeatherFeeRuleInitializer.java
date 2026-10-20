@@ -42,7 +42,6 @@ public class WeatherFeeRuleInitializer {
                     WeatherCondition.RAIN, null, null, new BigDecimal("0.50"));
             addRule(repository, VehicleType.BIKE, WeatherRuleType.SURCHARGE,
                     WeatherCondition.RAIN, null, null, new BigDecimal("0.50"));
-
             addRule(repository, VehicleType.SCOOTER, WeatherRuleType.FORBIDDEN,
                     WeatherCondition.GLAZE, null, null, null);
             addRule(repository, VehicleType.BIKE, WeatherRuleType.FORBIDDEN,
@@ -58,6 +57,7 @@ public class WeatherFeeRuleInitializer {
         };
     }
 
+    // Method to add the rules to the H2 database through the connected repository
     private void addRule(WeatherFeeRuleRepository repository, VehicleType vehicleType,
                          WeatherRuleType ruleType, WeatherCondition weatherCondition,
                          Double minValue, Double maxValue, BigDecimal fee) {

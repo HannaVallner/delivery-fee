@@ -40,6 +40,7 @@ public class WeatherImportService {
                 .body(String.class);
     }
 
+    // Get target station's tag value for a target tagname (for an example, temperature)
     public String getTagValue(Element station, String tagName) {
         Node node = station.getElementsByTagName(tagName).item(0);
         if (node == null) {
@@ -49,6 +50,8 @@ public class WeatherImportService {
         return value.isEmpty() ? null : value;
     }
 
+    // Get target station's tag value for a target tagname (for an example, temperature) through getTagValue
+    // and convert it to a Double. Used for wind speed and air temperature
     public Double getDoubleValue(Element station, String tagName) {
         String tagValue = getTagValue(station, tagName);
         if (tagValue == null) {
@@ -57,6 +60,7 @@ public class WeatherImportService {
         return Double.parseDouble(tagValue);
     }
 
+    // Get the weather observations for required stations
     public void importRequiredStations() throws Exception {
         String xml = downloadWeatherXml();
 
@@ -84,6 +88,7 @@ public class WeatherImportService {
                 "Pärnu"
         );
 
+        // Loop through all stations
         for (int i = 0; i < stations.getLength(); i++) {
             Element station = (Element) stations.item(i);
 
@@ -91,6 +96,7 @@ public class WeatherImportService {
 
             // Skip unneeded stations, including stations without a name
             if (requiredStations.contains(name)) {
+                // Retrieve required attributes and save them as a new weatherobservation entity
                 String wmoCode = getTagValue(station, "wmocode");
                 Double temperature = getDoubleValue(station, "airtemperature");
                 Double windSpeed = getDoubleValue(station, "windspeed");
@@ -110,6 +116,7 @@ public class WeatherImportService {
 
     }
 
+    // CRONJOB to import weather observations at hourly increments, every HH:15
     @Scheduled(cron = "${weather.import.cron}")
     public void scheduledWeatherImport() throws Exception {
         importRequiredStations();

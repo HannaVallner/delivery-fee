@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @Configuration
 public class RegionalBaseFeeInitializer {
 
+    // Define required regional base fees
     @Bean
     CommandLineRunner initializeRegionalBaseFees(RegionalBaseFeeRepository repository) {
         return args -> {
@@ -30,6 +31,7 @@ public class RegionalBaseFeeInitializer {
         };
     }
 
+    // Method to add the fees to the H2 database through the connected repository
     private void addFee(RegionalBaseFeeRepository repository, String city,
                         VehicleType vehicleType, BigDecimal fee) {
         if (!repository.existsByCityAndVehicleType(city, vehicleType)) {

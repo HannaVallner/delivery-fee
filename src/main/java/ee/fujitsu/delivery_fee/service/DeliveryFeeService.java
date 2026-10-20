@@ -25,6 +25,7 @@ public class DeliveryFeeService {
         this.weatherFeeRuleRepository = weatherFeeRuleRepository;
     }
 
+    // Finds regional base fee for target city and vehicle type
     public BigDecimal getBaseFee(String city, VehicleType vehicleType) {
         RegionalBaseFee baseFee = regionalBaseFeeRepository.findByCityAndVehicleType(city, vehicleType);
 
@@ -35,6 +36,7 @@ public class DeliveryFeeService {
         return baseFee.getBaseFee();
     }
 
+    // Retrieves the latest weather observation from H2 database
     public WeatherObservation getLatestWeatherObservation(String city) {
         String stationName = switch (city) {
             case "Tallinn" -> "Tallinn-Harku";
@@ -52,6 +54,7 @@ public class DeliveryFeeService {
         return weatherObservation;
     }
 
+    // Retrieves the weather observation closest to (but not after) to requested time
     public WeatherObservation getWeatherObservation(String city, Instant requestedAt) {
         String stationName = switch (city) {
             case "Tallinn" -> "Tallinn-Harku";
@@ -69,6 +72,7 @@ public class DeliveryFeeService {
         return weatherObservation;
     }
 
+    // Checks whether a target value is inclusively between min and max values, or exclusively over/under
     private boolean isValueInRange(Double targetValue, Double minValue, Double maxValue) {
         if (targetValue == null) {
             return false;
@@ -85,6 +89,7 @@ public class DeliveryFeeService {
         return targetValue >= minValue && targetValue <= maxValue;
     }
 
+    // Check whether a given rule is applicable in target weather conditions
     private boolean isRuleApplicable(WeatherFeeRule rule, WeatherObservation observation) {
         return switch (rule.getWeatherCondition()) {
             // Observed temperature between target rule parameters
@@ -128,6 +133,7 @@ public class DeliveryFeeService {
         return weatherFee;
     }
 
+    // Calculate total delivery fee (base fee + any surcharges)
     public BigDecimal calculateDeliveryFee(String city, VehicleType vehicleType, Instant requestedAt) {
         BigDecimal baseFee = getBaseFee(city, vehicleType);
 
