@@ -112,4 +112,14 @@ public class RegionalBaseFeeController {
         return regionalBaseFeeRepository.save(existingFee);
     }
 
+    @DeleteMapping("/api/base-fees/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBaseFee(@PathVariable Long id) {
+        if (!regionalBaseFeeRepository.existsById(id)) {
+            throw new IllegalArgumentException(
+                    "Base fee with id: " + id + " not found");
+        }
+
+        regionalBaseFeeRepository.deleteById(id);
+    }
 }
